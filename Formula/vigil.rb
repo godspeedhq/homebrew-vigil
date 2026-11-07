@@ -5,8 +5,8 @@
 class Vigil < Formula
   desc "Job scheduler, supervisor and metrics forwarder in the shells that ship with each OS"
   homepage "https://github.com/godspeedhq/vigil"
-  url "https://github.com/godspeedhq/vigil/releases/download/v0.5.1/vigil-0.5.1.tar.gz"
-  sha256 "682f6849da7077b87c36696e4deadd6f50f940178d845fdfa3e796ce6c58917e"
+  url "https://github.com/godspeedhq/vigil/releases/download/v0.5.2/vigil-0.5.2.tar.gz"
+  sha256 "d666a38f33b0353836234ad6ef35fe6856691acb28b17a03754a0d671f4fc151"
   license "Apache-2.0"
 
   def install
@@ -48,14 +48,14 @@ class Vigil < Formula
   def caveats
     <<~EOS
       Vigil's configuration, scripts, state and logs are in #{var}/vigil:
-        vigil config          edits the configuration
-        brew services start vigil
-      runs it now and at every login. Removing the formula keeps #{var}/vigil.
+        vigil config                 edits the configuration
+        brew services start vigil    runs it now and at every login
+      Removing the formula keeps #{var}/vigil.
     EOS
   end
 
   test do
-    assert_match "Vigil 0.5.1", shell_output("#{bin}/vigil version")
+    assert_match "Vigil 0.5.2", shell_output("#{bin}/vigil version")
     assert_match "by Homebrew", shell_output("#{bin}/vigil about")
   end
 end
