@@ -5,8 +5,8 @@
 class Vigil < Formula
   desc "Job scheduler, supervisor and metrics forwarder in each OS's own shells"
   homepage "https://github.com/godspeedhq/vigil"
-  url "https://github.com/godspeedhq/vigil/releases/download/v0.5.3/vigil-0.5.3.tar.gz"
-  sha256 "7a8ce73d47f8bd969faba45693bf4fa53fa2bcb1743acb9fddec75cc7ec70a4d"
+  url "https://github.com/godspeedhq/vigil/releases/download/v0.5.4/vigil-0.5.4.tar.gz"
+  sha256 "ae152f5f9d129ee1ef49e34839b41972c4c6c40f12cbec8b7711a05282eedde2"
   license "Apache-2.0"
 
   def install
@@ -59,7 +59,7 @@ class Vigil < Formula
   end
 
   test do
-    assert_match "Vigil 0.5.3", shell_output("#{bin}/vigil version")
+    assert_match "Vigil 0.5.4", shell_output("#{bin}/vigil version")
     assert_match "by Homebrew", shell_output("#{bin}/vigil about")
   end
 end
