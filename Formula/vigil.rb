@@ -3,10 +3,10 @@
 # tools/release/tap-bucket.sh, from a release's signed SHA256SUMS: change it
 # there, not in the tap.
 class Vigil < Formula
-  desc "Job scheduler, supervisor and metrics forwarder in the shells that ship with each OS"
+  desc "Job scheduler, supervisor and metrics forwarder in each OS's own shells"
   homepage "https://github.com/godspeedhq/vigil"
-  url "https://github.com/godspeedhq/vigil/releases/download/v0.5.2/vigil-0.5.2.tar.gz"
-  sha256 "d666a38f33b0353836234ad6ef35fe6856691acb28b17a03754a0d671f4fc151"
+  url "https://github.com/godspeedhq/vigil/releases/download/v0.5.3/vigil-0.5.3.tar.gz"
+  sha256 "7a8ce73d47f8bd969faba45693bf4fa53fa2bcb1743acb9fddec75cc7ec70a4d"
   license "Apache-2.0"
 
   def install
@@ -29,12 +29,16 @@ class Vigil < Formula
   end
 
   # A starting configuration only when there is none: the defaults vigil init
-  # takes on Enter (the host name, metrics to a file, the base pack).
-  def post_install
-    (var/"vigil").mkpath
-    return if (var/"vigil/config/vigil.config").exist?
-
-    system "/bin/bash", "-c", '/bin/bash "$0" init --backend file < /dev/null', (libexec/"app/vigil").to_s
+  # takes on Enter (the host name, metrics to a file, the base pack). Steps,
+  # not a post_install method, which Homebrew 7 deprecates: they run in its
+  # sandbox, so vigil init may write only to var/vigil, and with no standard
+  # input it asks nothing.
+  post_install_steps do
+    mkdir_p "vigil", base: :var
+    unless_path_exists "vigil/config/vigil.config", base: :var do
+      run "/bin/bash", args: ["{{libexec}}/app/vigil", "init", "--backend", "file"],
+                       writable_paths: ["vigil"], writable_base: :var
+    end
   end
 
   service do
@@ -55,7 +59,7 @@ class Vigil < Formula
   end
 
   test do
-    assert_match "Vigil 0.5.2", shell_output("#{bin}/vigil version")
+    assert_match "Vigil 0.5.3", shell_output("#{bin}/vigil version")
     assert_match "by Homebrew", shell_output("#{bin}/vigil about")
   end
 end
